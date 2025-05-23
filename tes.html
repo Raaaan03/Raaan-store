@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Skeleton Loader</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    .card {
+      width: 300px;
+      background-color: #1e1e1e;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    .skeleton {
+      background: linear-gradient(100deg, #2e2e2e 8%, #3a3a3a 18%, #2e2e2e 33%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite linear;
+      border-radius: 8px;
+    }
+
+    .skeleton.avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+
+    .skeleton.text {
+      height: 14px;
+      margin-bottom: 10px;
+    }
+
+    .skeleton.text.short {
+      width: 40%;
+    }
+
+    .skeleton.text.long {
+      width: 100%;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    .content {
+      display: none;
+    }
+
+    .avatar-img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Skeleton Loader -->
+  <div class="card" id="skeletonCard">
+    <div class="skeleton avatar"></div>
+    <div class="skeleton text long"></div>
+    <div class="skeleton text long"></div>
+    <div class="skeleton text short"></div>
+  </div>
+
+  <!-- Real Content -->
+  <div class="card content" id="realCard">
+    <img src="https://randomuser.me/api/portraits/men/32.jpg" class="avatar-img" />
+    <h3>Rizky Ramadhan</h3>
+    <p>Frontend Developer, suka ngoding malem-malem.</p>
+    <small>Terakhir aktif: 3 menit lalu</small>
+  </div>
+
+  <script>
+    // Simulasi data loading 3 detik
+    setTimeout(() => {
+      document.getElementById("skeletonCard").style.display = "none";
+      document.getElementById("realCard").style.display = "block";
+    }, 3000);
+  </script>
+
+</body>
+</html>

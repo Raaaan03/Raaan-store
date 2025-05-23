@@ -1,0 +1,180 @@
+/* style.css */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: 'Inter', sans-serif;
+  background: #121212;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 120px;
+}
+.container {
+  flex: 1;
+  padding: 20px;
+  max-width: 800px;
+  margin: auto;
+  width: 100%;
+}
+h2 {
+  margin: 20px 0 10px;
+  font-size: 1.4rem;
+  border-left: 4px solid #00ffe1;
+  padding-left: 10px;
+}.navbar {
+  position: fixed;    /* bikin navbar nempel */
+  bottom: 0;          /* di bawah viewport */
+  left: 0;
+  width: 100%;
+  background: #1e1e1e;
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.navbar a {
+  color: #aaa;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-top: 3px solid transparent;   /* default transparent */
+  transition: color .2s, border-top .2s;
+}
+
+.navbar a:hover,
+.navbar a.active {
+  color: #03dac6;                      /* teks biru */
+  border-top: 3px solid #03dac6;       /* garis biru di atas */
+}
+
+/* Jangan lupa kasih space bawah supaya konten gak ketutup */
+body {
+  padding-bottom: 60px; /* atau sesuai tinggi navbar */
+}
+
+
+.file-list .file-box {
+  background: #121212;
+  border: 1px solid #444;
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin: 8px 0;
+  cursor: pointer;
+  transition: background .2s;
+}
+.file-box:hover {
+  background: #1e1e1e;
+}
+.category-section h3 {
+  font-size: 1.2rem;
+  margin: 20px 0 10px;
+  color: #00f2ea;
+  text-transform: capitalize;
+}
+.item {
+  background: #1e1e1e;
+  padding: 1rem;
+  margin-bottom: .5rem;
+  border-radius: .5rem;
+  display: flex;
+  justify-content: space-between;
+}
+.item span:first-child {
+  font-weight: bold;
+}
+.item span:last-child {
+  color: #03dac6;
+}
+.premium-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(45%, 1fr));
+  gap: 15px;
+  margin-top: 15px;
+}
+.premium-item {
+  background: #1e1e1e;
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+.premium-item h3 {
+  color: #00ffe1;
+  margin-bottom: 8px;
+}
+.premium-price {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #333;
+  margin-top: 6px;
+  padding-top: 6px;
+}
+.popup-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(10px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+}
+.popup-content {
+  background: #222;
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 480px;
+  width: 100%;
+  color: #eee;
+  box-shadow: 0 0 15px #00ffe1;
+  text-align: left;
+  line-height: 1.5;
+}
+.popup-content h2 {
+  color: #00ffe1;
+  margin-bottom: 15px;
+}
+.popup-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+.popup-buttons button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background .3s;
+}
+.btn-copy {
+  background: #03dac6;
+  color: #000;
+}
+.btn-copy:hover {
+  background: #00bfa5;
+}
+.btn-promise {
+  background: #ff5252;
+  color: #fff;
+}
+.btn-promise:hover {
+  background: #e04848;
+}
+.search-bar {
+  margin: 10px 0;
+}
+.search-bar input {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background: #1e1e1e;
+  color: #fff;
+}

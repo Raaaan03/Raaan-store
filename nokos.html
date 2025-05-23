@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Raaan Store — NoKos</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    * { box-sizing: border-box; margin:0; padding:0 }
+    body {
+      background: #0d0d0d;
+      color: #fff;
+      font-family: "Inter", sans-serif;
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      user-select: none;
+      touch-action: manipulation;
+    }
+    h2 {
+      margin: 20px 0 10px;
+      font-size: 1.4rem;
+      border-left: 4px solid #1313f9;
+      padding-left: 10px;
+    }
+    .search-bar {
+      display: flex;
+      gap: 10px;
+      margin: 10px 0;
+      max-width: 100%;
+      overflow: hidden;
+    }
+    .search-bar input {
+      flex: 1 1 0;
+      min-width: 0;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid #444;
+      background: #1e1e1e;
+      color: #fff;
+      font-size: 0.9rem;
+    }
+    .country-bar {
+      display: flex;
+      overflow-x: auto;
+      gap: 6px;
+      margin: 10px 0;
+      padding-bottom: 6px;
+    }
+    .country-bar button {
+      flex: 0 0 auto;
+      padding: 6px 12px;
+      font-size: 0.85rem;
+      border: none;
+      border-radius: 4px;
+      background: #1e1e1e;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .country-bar button.active {
+      background: #007bff;
+      color: #fff;
+      font-weight: 700;
+    }
+    /* Pagination */
+    #pagination {
+      display: flex;
+      gap: 5px;
+      justify-content: center;
+      margin: 10px 0;
+      position: sticky;
+      top: 0;
+      background: #0d0d0d;
+      padding: 5px 0;
+      z-index: 10;
+    }
+    #pagination button {
+      padding: 4px 8px;
+      border: 1px solid #444;
+      border-radius: 4px;
+      background: #1e1e1e;
+      color: #fff;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+    #pagination button.active {
+      background: #007bff;
+      border-color: #007bff;
+    }
+    .premium-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(45%, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+    .premium-item {
+      background: #242323;
+      border-radius: 8px;
+      font-size: .7rem;
+      padding: 12px 14px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: slideUp .5s forwards;
+    }
+    @keyframes slideUp {
+      to { opacity: 1; transform: translateY(0) }
+    }
+    .premium-item h3 {
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+    .premium-price {
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid #333;
+      margin-top: 6px;
+      padding-top: 6px;
+    }
+    nav.navbar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-around;
+      background: #1f1f1f;
+      border-top: 1px solid #333;
+      padding: 5px 0;
+      z-index: 1000;
+    }
+    nav.navbar a {
+      flex: 1;
+      text-align: center;
+      color: #fff;
+      font-size: 1.5rem;
+      text-decoration: none;
+    }
+    nav.navbar a.active,
+    nav.navbar a:hover {
+      color: #1313f9;
+      font-weight: 700;
+    }
+    .loader-wrapper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(18, 18, 18, 0.85);
+      backdrop-filter: blur(6px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    .loader {
+      width: 48px;
+      height: 48px;
+      background: #1313f9;
+      transform: rotateX(65deg) rotate(45deg);
+      animation: layers1 1s linear infinite alternate;
+      position: relative;
+    }
+    .loader:after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.7);
+      animation: layerTr 1s linear infinite alternate;
+    }
+    @keyframes layers1 {
+      0% { box-shadow: 0 0 0 0 }
+      100% { box-shadow: 20px 20px 0 -4px }
+    }
+    @keyframes layerTr {
+      0% { transform: translate(0, 0) scale(1) }
+      100% { transform: translate(-25px, -25px) scale(1) }
+    }
+  </style>
+</head>
+<body>
+  <div class="loader-wrapper" id="loader">
+    <span class="loader"></span>
+  </div>
+
+  <div class="container" id="mainContent" style="display:none">
+    <h2>Nomor Virtual (NoKos)</h2>
+    <p>Khusus Nomor Indonesia, bisa request provider (misal Telkomsel)</p>
+
+    <div class="search-bar">
+      <input type="text" id="search-negara" placeholder="Cari negara..." />
+      <input type="text" id="search-layanan" placeholder="Cari layanan..." />
+    </div>
+
+    <div class="country-bar" id="country-bar"></div>
+
+    <!-- Pagination controls -->
+    <div id="pagination"></div>
+
+    <div id="nokos-grid" class="premium-grid"></div>
+  </div>
+
+  <nav class="navbar">
+    <a href="index.html" title="Beranda"><i class="fas fa-home"></i></a>
+    <a href="freeapk.html" title="Free APK"><i class="fas fa-download"></i></a>
+    <a href="social.html" title="Sosial Media"><i class="fas fa-users"></i></a>
+    <a href="apkpremium.html" title="Premium"><i class="fas fa-crown"></i></a>
+    <a href="nokos.html" class="active" title="NoKos"><i class="fas fa-sd-card"></i></a>
+    <a href="testimoni.html" title="Testimoni"><i class="fas fa-comment-dots"></i></a>
+  </nav>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const loaderWrap = document.getElementById("loader");
+      const main = document.getElementById("mainContent");
+      const inputNegara = document.getElementById("search-negara");
+      const inputLayanan = document.getElementById("search-layanan");
+      const countryBar = document.getElementById("country-bar");
+      const grid = document.getElementById("nokos-grid");
+      const pagination = document.getElementById("pagination");
+
+      let countries = [], dataKos = [], filteredKos = [];
+      let activeCt = null;
+      const itemsPerPage = 10;
+      let currentPage = 1;
+
+      const isBlack = name => {
+        const blacklist = ["casino online","slot","judi","togel","yandex","poker"];
+        return blacklist.some(k => name.toLowerCase().includes(k));
+      };
+
+      function showLoader() {
+        grid.innerHTML = "";
+        pagination.innerHTML = "";
+        loaderWrap.style.display = "flex";
+      }
+      function hideLoader() {
+        loaderWrap.style.display = "none";
+        main.style.display = "block";
+      }
+
+      function renderPage(page) {
+        showLoader();
+        setTimeout(() => {
+          const start = (page-1)*itemsPerPage;
+          const end = start + itemsPerPage;
+          const pageItems = filteredKos.slice(start, end);
+
+          grid.innerHTML = "";
+          pageItems.forEach((it, idx) => {
+            const div = document.createElement("div");
+            div.className = "premium-item";
+            div.style.animationDelay = `${idx*100}ms`;
+            div.innerHTML = `
+              <h3>${it.layanan} — <span style="color:#007bff">${activeCt.name}</span></h3>
+              <div class="premium-price">
+                <span>Rp${new Intl.NumberFormat("id-ID").format(it.hargaJual)}</span>
+              </div>
+            `;
+            grid.appendChild(div);
+          });
+
+          // pagination buttons
+          const pageCount = Math.ceil(filteredKos.length/itemsPerPage);
+          pagination.innerHTML = "";
+          for (let i=1; i<=pageCount; i++) {
+            const btn = document.createElement("button");
+            btn.textContent = i;
+            if (i === page) btn.classList.add("active");
+            btn.addEventListener("click", () => {
+              currentPage = i;
+              renderPage(i);
+            });
+            pagination.appendChild(btn);
+          }
+          hideLoader();
+        }, 300); // delay 300ms untuk loader
+      }
+
+      function applyFilters() {
+        const q = inputLayanan.value.toLowerCase();
+        filteredKos = dataKos.filter(i => !isBlack(i.layanan) && i.layanan.toLowerCase().includes(q));
+        currentPage = 1;
+        renderPage(currentPage);
+      }
+
+      // fetch countries & init
+      fetch("/api/countries")
+        .then(r => r.json())
+        .then(list => {
+          countries = list;
+          countries.forEach((ct, idx) => {
+            const btn = document.createElement("button");
+            btn.textContent = ct.name;
+            if (idx === 0) {
+              btn.classList.add("active");
+              activeCt = ct;
+            }
+            btn.addEventListener("click", () => {
+              document.querySelectorAll(".country-bar button").forEach(b => b.classList.remove("active"));
+              btn.classList.add("active");
+              activeCt = ct;
+              inputNegara.value = "";
+              inputLayanan.value = "";
+              fetchLayanan(ct.id);
+            });
+            countryBar.appendChild(btn);
+          });
+          // init first country
+          fetchLayanan(countries[0].id);
+        });
+
+      function fetchLayanan(id) {
+        showLoader();
+        fetch(`/api/layanan?negara=${id}`)
+          .then(r => r.json())
+          .then(list => {
+            dataKos = list.filter(i => !isBlack(i.layanan));
+            filteredKos = dataKos;
+            renderPage(1);
+          })
+          .catch(() => {
+            grid.innerHTML = "<p style='color:#f55'>Gagal memuat layanan.</p>";
+            hideLoader();
+          });
+      }
+
+      // country search (filter buttons)
+      inputNegara.addEventListener("input", () => {
+        const q = inputNegara.value.toLowerCase();
+        document.querySelectorAll(".country-bar button").forEach((btn, i) => {
+          const name = countries[i].name.toLowerCase();
+          btn.style.display = name.includes(q) ? "inline-block" : "none";
+        });
+      });
+
+      // layanan search with debounce
+      let typingTimer;
+      inputLayanan.addEventListener("input", () => {
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(applyFilters, 300);
+      });
+
+      // hide initial loader
+      window.addEventListener("load", hideLoader);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Raaan Store — Testimoni</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: #0d0d0d;
+        color: #fff;
+        font-family: "Inter", sans-serif;
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 20px;
+        user-select: none;
+        touch-action: manipulation;
+      }
+      h2 {
+        margin: 20px 0 10px;
+        font-size: 1.4rem;
+        border-left: 4px solid #1313f9;
+        padding-left: 10px;
+        color: #f0f0f0;
+      }
+      .testimoni-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+      .testimoni-item {
+        background: #1a1a1a;
+        border-radius: 12px;
+        padding: 12px;
+        text-align: center;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+        cursor: pointer;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: slideUpFade 0.5s forwards;
+      }
+      .testimoni-item img {
+        width: 100%;
+        aspect-ratio: 1/1;
+        object-fit: cover;
+        border-radius: 10px;
+      }
+      .testimoni-text {
+        margin-top: 8px;
+        font-size: 14px;
+        color: #ccc;
+      }
+      @keyframes slideUpFade {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.7);
+        display: none;
+        backdrop-filter: blur(8px);
+        justify-content: center;
+        align-items: center;
+        z-index: 999;
+      }
+      .popup-content {
+        position: relative;
+        width: 90vmin;
+        height: 90vmin;
+      }
+      .popup-content img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 12px;
+      }
+      #zoom-darken {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+        z-index: 998;
+      }
+
+      /* Navbar style update (inspired dari NoKos) */
+nav.navbar {
+  max-width: 500px;
+  margin: 0 auto;
+  position: fixed;
+  bottom: 0;  left: 0;
+  right: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  background: #1f1f1f;
+  border-top: 1px solid #333;
+  box-shadow: 0 -2px 6px rgba(0,0,0,.7);
+  color: white;
+  z-index: 1000;
+}
+
+   nav.navbar a {
+  flex: 1;
+  text-align: center;
+  padding: 12px 0;
+  color: #fff;
+  font-size: 1.5rem;
+  position: relative;
+  transition: color 0.3s;
+}
+
+    nav.navbar a.active, nav.navbar a:hover {
+      color:#1313f9;
+    }
+    nav.navbar a.active {
+      border-top:3px solid #1313f9; font-weight:700;
+    }
+    nav.navbar a::before {
+      content:attr(title);
+      position:absolute; bottom:100%; left:50%;
+      transform:translate(-50%,-10px);
+      background:#1313f9; color:white;
+      padding:3px 8px; border-radius:4px;
+      font-size:.75rem; white-space:nowrap;
+      opacity:0; pointer-events:none;
+      transition:opacity .3s,transform .3s; z-index:1001;
+    }
+    nav.navbar a:hover::before, nav.navbar a.active::before {
+      opacity:1; transform:translate(-50%,-20px); pointer-events:auto;
+    }
+
+      /* Loader styling */
+      .loader-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(18, 18, 18, 0.85);
+        backdrop-filter: blur(6px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+      }
+      .loader {
+        width: 48px;
+        height: 48px;
+        background: #1313f9;
+        transform: rotateX(65deg) rotate(45deg);
+        animation: layers1 1s linear infinite alternate;
+        position: relative;
+      }
+      .loader:after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(255, 255, 255, 0.7);
+        animation: layerTr 1s linear infinite alternate;
+      }
+      @keyframes layers1 {
+        0% {
+          box-shadow: 0 0 0 0px;
+        }
+        90%,
+        100% {
+          box-shadow: 20px 20px 0 -4px;
+        }
+      }
+      @keyframes layerTr {
+        0% {
+          transform: translate(0, 0) scale(1);
+        }
+        100% {
+          transform: translate(-25px, -25px) scale(1);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="loader-wrapper" id="loader">
+      <span class="loader"></span>
+    </div>
+    <div id="mainContent" style="display: none">
+      <h2>Testimoni Orderan Raaan Store</h2>
+      <div class="testimoni-container" id="testimoniContainer"></div>
+    </div>
+    <div class="popup-overlay" id="popupOverlay">
+      <div class="popup-content" id="popupContent"></div>
+    </div>
+    <div id="zoom-darken"></div>
+    <nav class="navbar">
+      <a href="index.html" title="Beranda"><i class="fas fa-home"></i></a>
+      <a href="freeapk.html" title="Free APK"><i class="fas fa-download"></i></a>
+      <a href="social.html" title="Sosial Media"><i class="fas fa-users"></i></a>
+      <a href="apkpremium.html" title="Premium"><i class="fas fa-crown"></i></a>
+      <a href="nokos.html" title="NoKos"><i class="fas fa-sd-card"></i></a>
+      <a href="testimoni.html" class="active" title="Testimoni"
+        ><i class="fas fa-comment-dots"></i
+      ></a>
+    </nav>
+
+    <script>
+      // Loader langsung hilang begitu konten siap (tanpa delay 1 detik)
+      window.addEventListener("load", () => {
+        document.getElementById("loader").style.display = "none";
+        document.getElementById("mainContent").style.display = "block";
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const rawData = `
+          {{https://cdn.glitch.global/e2da7ba6-0dd2-444e-83bc-c905ef024be4/thumbnails%2FGambar%20WhatsApp%202025-05-22%20pukul%2016.20.58_6091e1d5.jpg}{MINGGU, 18 MEI 2019}},  
+          {{https://cdn.glitch.global/e2da7ba6-0dd2-444e-83bc-c905ef024be4/thumbnails%2FGambar%20WhatsApp%202025-05-22%20pukul%2016.20.58_6091e1d5.jpg}{ALVIN SALIM, PALU}}, 
+          {{https://cdn.glitch.global/e2da7ba6-0dd2-444e-83bc-c905ef024be4/thumbnails%2FGambar%20WhatsApp%202025-05-22%20pukul%2016.20.58_6091e1d5.jpg}{EVAN & MEGA, BANDUNG}},  
+          {{https://cdn.glitch.global/e2da7ba6-0dd2-444e-83bc-c905ef024be4/thumbnails%2FGambar%20WhatsApp%202025-05-22%20pukul%2016.20.58_6091e1d5.jpg}{ATIKA, JAKARTA}},  
+          {{https://cdn.glitch.global/e2da7ba6-0dd2-444e-83bc-c905ef024be4/thumbnails%2FGambar%20WhatsApp%202025-05-22%20pukul%2016.20.58_6091e1d5.jpg}{LILY, SURABAYA}},  
+          {{https://cdn.glitch.global/e2da7ba6-0dd2-444e-83bc-c905ef024be4/thumbnails%2FGambar%20WhatsApp%202025-05-22%20pukul%2016.20.58_6091e1d5.jpg}{TIKA, BEKASI}},  
+          {{https://cdn.glitch.global/e2da7ba6-0dd2-444e-83bc-c905ef024be4/thumbnails%2FGambar%20WhatsApp%202025-05-22%20pukul%2016.20.58_6091e1d5.jpg}{DANANG, SEMARANG}},  
+          {{https://cdn.glitch.global/e2da7ba6-0dd2-444e-83bc-c905ef024be4/thumbnails%2FGambar%20WhatsApp%202025-05-22%20pukul%2016.20.58_6091e1d5.jpg}{ADI, BANDUNG}},  
+          {{https://cdn.glitch.global/e2da7ba6-0dd2-444e-83bc-c905ef024be4/thumbnails%2FGambar%20WhatsApp%202025-05-22%20pukul%2016.20.58_6091e1d5.jpg}{ELLA, JAKARTA}}
+        `;
+        const container = document.getElementById("testimoniContainer");
+        // Parse the raw data into array of objects
+        const regex = /\{\{(.+?)\}\{(.+?)\}\}/g;
+        let matches, items = [];
+        while ((matches = regex.exec(rawData)) !== null) {
+          items.push({ img: matches[1], text: matches[2] });
+        }
+
+        items.forEach(({ img, text }, i) => {
+          const div = document.createElement("div");
+          div.className = "testimoni-item";
+          div.style.animationDelay = `${i * 0.1}s`;
+          div.innerHTML = `
+            <img src="${img}" alt="Testimoni ${text}" loading="lazy" />
+            <div class="testimoni-text">${text}</div>
+          `;
+          div.addEventListener("click", () => {
+            const popup = document.getElementById("popupOverlay");
+            const popupContent = document.getElementById("popupContent");
+            const zoomDarken = document.getElementById("zoom-darken");
+            popupContent.innerHTML = `<img src="${img}" alt="Zoomed Testimoni" />`;
+            popup.style.display = "flex";
+            zoomDarken.style.display = "block";
+          });
+          container.appendChild(div);
+        });
+
+        document.getElementById("popupOverlay").addEventListener("click", () => {
+          document.getElementById("popupOverlay").style.display = "none";
+          document.getElementById("zoom-darken").style.display = "none";
+        });
+        document.getElementById("zoom-darken").addEventListener("click", () => {
+          document.getElementById("popupOverlay").style.display = "none";
+          document.getElementById("zoom-darken").style.display = "none";
+        });
+      });
+    </script>
+  </body>
+</html>

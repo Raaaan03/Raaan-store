@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Raaan Store — NoKos</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: #0d0d0d;
+        color: #fff;
+        font-family: "Inter", sans-serif;
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 20px;
+        user-select: none;
+        touch-action: manipulation;
+      }
+      .container {
+        flex: 1;
+        padding: 20px;
+        max-width: 500px;
+        margin: 0 auto;
+        width: 100%;
+      }
+      h2 {
+        margin: 20px 0 10px;
+        font-size: 1.4rem;
+        border-left: 4px solid #1313f9;
+        padding-left: 10px;
+      }
+      .search-bar {
+        margin: 10px 0;
+        display: flex;
+        gap: 10px;
+      }
+      .search-bar input {
+        flex: 1;
+        padding: 8px 12px;
+        border-radius: 6px;
+        border: 1px solid #444;
+        background: #1e1e1e;
+        color: #fff;
+      }
+      .country-bar {
+        display: flex;
+        overflow-x: auto;
+        gap: 6px;
+        margin: 10px 0;
+        padding-bottom: 6px;
+      }
+      .country-bar button {
+        flex: none;
+        padding: 6px 10px;
+        font-size: 0.85rem;
+        border: none;
+        border-radius: 4px;
+        background: #1e1e1e;
+        color: #fff;
+        cursor: pointer;
+        transition: background 0.2s;
+        order: 0;
+      }
+      .country-bar button.active {
+        background: #007bff;
+        color: #fff;
+        order: -1;
+      }
+      .premium-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(45%, 1fr));
+        gap: 15px;
+        margin-top: 15px;
+      }
+      .premium-item {
+        background: #242323;
+        border-radius: 8px;
+        font-size: 0.7rem;
+        padding: 12px 14px;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: slideUp 0.5s forwards;
+      }
+      @keyframes slideUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .premium-item h3 {
+        /* nanti warna bisa diubah lewat JS jika perlu */
+        font-size: 1rem;
+        margin-bottom: 8px;
+      }
+      .premium-price {
+        display: flex;
+        justify-content: space-between;
+        border-top: 1px solid #333;
+        margin-top: 6px;
+        padding-top: 6px;
+      }
+      @keyframes slideUpFade {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      nav.navbar {
+        max-width: 500px;
+        margin: 0 auto;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        background: #1f1f1f;
+        border-top: 1px solid #333;
+        box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.7);
+        color: white;
+        z-index: 1000;
+      }
+      nav.navbar a {
+        flex: 1;
+        text-align: center;
+        padding: 12px 0;
+        color: #fff;
+        font-size: 1.5rem;
+        position: relative;
+        transition: color 0.3s;
+      }
+      nav.navbar a.active,
+      nav.navbar a:hover {
+        color: #1313f9;
+      }
+      nav.navbar a.active {
+        border-top: 3px solid #1313f9;
+        font-weight: 700;
+      }
+      nav.navbar a::before {
+        content: attr(title);
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translate(-50%, -10px);
+        background: #1313f9;
+        color: white;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s, transform 0.3s;
+        z-index: 1001;
+      }
+      nav.navbar a:hover::before,
+      nav.navbar a.active::before {
+        opacity: 1;
+        transform: translate(-50%, -20px);
+        pointer-events: auto;
+      }
+      .loader-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(18, 18, 18, 0.85);
+        backdrop-filter: blur(6px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+      }
+      .loader {
+        width: 48px;
+        height: 48px;
+        background: #1313f9;
+        transform: rotateX(65deg) rotate(45deg);
+        animation: layers1 1s linear infinite alternate;
+        position: relative;
+      }
+      .loader:after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(255, 255, 255, 0.7);
+        animation: layerTr 1s linear infinite alternate;
+      }
+      @keyframes layers1 {
+        0% {
+          box-shadow: 0 0 0 0;
+        }
+        100% {
+          box-shadow: 20px 20px 0 -4px;
+        }
+      }
+      @keyframes layerTr {
+        0% {
+          transform: translate(0, 0) scale(1);
+        }
+        100% {
+          transform: translate(-25px, -25px) scale(1);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="loader-wrapper" id="loader">
+      <span class="loader"></span>
+    </div>
+    <div class="container" id="mainContent" style="display: none">
+      <h2>Nomor Virtual (NoKos)</h2>
+      <p>Khusus Nomor Indonesia, bisa request provider (misal Telkomsel)</p>
+      <div class="search-bar">
+        <input type="text" id="search-negara" placeholder="Cari negara..." />
+        <input type="text" id="search-layanan" placeholder="Cari layanan..." />
+      </div>
+      <div class="country-bar" id="country-bar"></div>
+      <div id="nokos-grid" class="premium-grid"></div>
+    </div>
+
+    <nav class="navbar" id="navMenu">
+      <a href="index.html" title="Beranda"><i class="fas fa-home"></i></a>
+      <a href="freeapk.html" title="Free APK"><i class="fas fa-download"></i></a>
+      <a href="social.html" title="Sosial Media"><i class="fas fa-users"></i></a>
+      <a href="apkpremium.html" title="Premium"><i class="fas fa-crown"></i></a>
+      <a href="nokos.html" class="active" title="NoKos"><i class="fas fa-sd-card"></i></a>
+      <a href="testimoni.html" title="Testimoni"><i class="fas fa-comment-dots"></i></a>
+    </nav>
+
+    <script>
+      function getEffectiveCountryId(ct) {
+        return ct.id === 0 ? 6 : ct.id;
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const loader = document.getElementById("loader");
+        const mainContent = document.getElementById("mainContent");
+        const inputNegara = document.getElementById("search-negara");
+        const inputLayanan = document.getElementById("search-layanan");
+        const countryBar = document.getElementById("country-bar");
+        const grid = document.getElementById("nokos-grid");
+        const blacklist = [
+          "casino online",
+          "game online",
+          "live casino",
+          "agen slot",
+          "agent slot",
+          "game slot",
+          "slot gacor",
+          "judi slot",
+          "judi online",
+          "judi bola",
+          "live game",
+          "indodax",
+          "judi",
+          "loker",
+          "lokers",
+          "loker jakarta",
+          "bonus",
+          "free fire",
+          "makan gratis",
+          "kerja online",
+          "uang gratis",
+          "free pulsa",
+          "pulsa gratis",
+        ];
+        let activeCt = null;
+        let allItems = [];
+        let filteredItems = [];
+
+        // load data negara + premium dari API
+        fetch("https://raaan-store.vercel.app/api/premium?key=Go2NoKos4Me")
+          .then((res) => res.json())
+          .then(({ negara, premium }) => {
+            allItems = premium;
+            // negara array
+            if (!Array.isArray(negara) || negara.length === 0) {
+              console.error("Data negara kosong atau tidak valid");
+              return;
+            }
+
+            activeCt = negara[0];
+            renderCountryBar(negara);
+            filterAndRender();
+
+            loader.style.display = "none";
+            mainContent.style.display = "block";
+          })
+          .catch((err) => {
+            console.error(err);
+            loader.style.display = "none";
+            mainContent.style.display = "block";
+            alert("Gagal memuat data, silakan refresh halaman.");
+          });
+
+        // render tombol negara
+        function renderCountryBar(countries) {
+          countryBar.innerHTML = "";
+          countries.forEach((ct) => {
+            const btn = document.createElement("button");
+            btn.textContent = ct.name;
+            btn.classList.toggle("active", ct === activeCt);
+            btn.addEventListener("click", () => {
+              if (activeCt === ct) return;
+              activeCt = ct;
+              setActiveCountryButton(ct);
+              filterAndRender();
+            });
+            countryBar.appendChild(btn);
+          });
+        }
+
+        function setActiveCountryButton(ct) {
+          const buttons = countryBar.querySelectorAll("button");
+          buttons.forEach((btn) => {
+            btn.classList.toggle("active", btn.textContent === ct.name);
+          });
+        }
+
+        // render item (layanan)
+        function renderItems(items) {
+          grid.innerHTML = "";
+          items.forEach((it, idx) => {
+            const div = document.createElement("div");
+            div.className = "premium-item";
+            div.style.animationDelay = `${idx * 100}ms`;
+            div.innerHTML = `
+              <h3>${it.layanan} - ${activeCt.name}</h3>
+              <div class="premium-price">
+                <span>Rp${new Intl.NumberFormat("id-ID").format(it.hargaJual)}</span>
+              </div>
+            `;
+            grid.appendChild(div);
+          });
+        }
+
+        // filter & render
+        function filterAndRender() {
+          // filter negara
+          let filteredByCountry = allItems.filter(
+            (it) => it.negara === activeCt.name
+          );
+
+          // filter blacklist di layanan (case insensitive)
+          filteredByCountry = filteredByCountry.filter(
+            (it) =>
+              !blacklist.some((bad) =>
+                it.layanan.toLowerCase().includes(bad.toLowerCase())
+              )
+          );
+
+          // filter search negara
+          const searchCt = inputNegara.value.trim().toLowerCase();
+          if (searchCt) {
+            filteredByCountry = filteredByCountry.filter((it) =>
+              it.negara.toLowerCase().includes(searchCt)
+            );
+          }
+          // filter search layanan
+          const searchLy = inputLayanan.value.trim().toLowerCase();
+          if (searchLy) {
+            filteredByCountry = filteredByCountry.filter((it) =>
+              it.layanan.toLowerCase().includes(searchLy)
+            );
+          }
+
+          filteredItems = filteredByCountry;
+          renderItems(filteredItems);
+        }
+
+        // input event
+        inputNegara.addEventListener("input", () => {
+          filterAndRender();
+        });
+        inputLayanan.addEventListener("input", () => {
+          filterAndRender();
+        });
+      });
+    </script>
+  </body>
+</html>

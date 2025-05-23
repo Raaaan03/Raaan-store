@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Raaan Store - Free APK</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+        background: #0d0d0d;
+        color: #fff;
+        font-family: "Inter", sans-serif;
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 20px;
+        user-select: none;
+        touch-action: manipulation;
+      }
+
+        .loader-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(18, 18, 18, 0.85);
+            backdrop-filter: blur(6px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loader {
+            width: 48px;
+            height: 48px;
+            background: #1313f9;
+            transform: rotateX(65deg) rotate(45deg);
+            animation: layers1 1s linear infinite alternate;
+        }
+
+        .loader:after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.7);
+            animation: layerTr 1s linear infinite alternate;
+        }
+
+        @keyframes layers1 {
+            0% {
+                box-shadow: 0 0 0 0;
+            }
+
+            100% {
+                box-shadow: 20px 20px 0 -4px;
+            }
+        }
+
+        @keyframes layerTr {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            100% {
+                transform: translate(-25px, -25px) scale(1);
+            }
+        }
+
+        #mainContent {
+            display: none;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            flex: 1;
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+            width: 100%;
+        }
+
+        h2 {
+            margin: 20px 0 10px;
+            font-size: 1.4rem;
+            border-left: 4px solid #00ffe1;
+            padding-left: 10px;
+        }
+
+        .file-box {
+            background: #121212;
+            border: 1px solid #444;
+            border-radius: 6px;
+            padding: 12px 16px;
+            margin: 8px 0;
+            cursor: pointer;
+            transition: background .2s;
+        }
+
+        .file-box:hover {
+            background: #1e1e1e;
+        }
+
+        .file-name {
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .file-url {
+            font-size: .85rem;
+            color: #888;
+            word-break: break-all;
+        }
+
+   nav.navbar {
+  max-width: 500px;
+  margin: 0 auto;
+  position: fixed;
+  bottom: 0;  left: 0;
+  right: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  background: #1f1f1f;
+  border-top: 1px solid #333;
+  box-shadow: 0 -2px 6px rgba(0,0,0,.7);
+  color: white;
+  z-index: 1000;
+}
+
+   nav.navbar a {
+  flex: 1;
+  text-align: center;
+  padding: 12px 0;
+  color: #fff;
+  font-size: 1.5rem;
+  position: relative;
+  transition: color 0.3s;
+}
+
+    nav.navbar a.active, nav.navbar a:hover {
+      color:#1313f9;
+    }
+    nav.navbar a.active {
+      border-top:3px solid #1313f9; font-weight:700;
+    }
+    nav.navbar a::before {
+      content:attr(title);
+      position:absolute; bottom:100%; left:50%;
+      transform:translate(-50%,-10px);
+      background:#1313f9; color:white;
+      padding:3px 8px; border-radius:4px;
+      font-size:.75rem; white-space:nowrap;
+      opacity:0; pointer-events:none;
+      transition:opacity .3s,transform .3s; z-index:1001;
+    }
+    nav.navbar a:hover::before, nav.navbar a.active::before {
+      opacity:1; transform:translate(-50%,-20px); pointer-events:auto;
+    }
+    </style>
+</head>
+
+<body>
+    <!-- Loader -->
+    <div class="loader-wrapper" id="loader">
+        <div class="loader"></div>
+    </div>
+    <!-- Main Content -->
+    <div id="mainContent">
+        <div class="container">
+            <h2>APK Gratis</h2>
+            <div id="file-list"></div>
+        </div>
+        <nav class="navbar">
+            <a href="index.html" title="Beranda"><i class="fas fa-home"></i></a>
+            <a href="freeapk.html" class="active" title="Free APK"><i class="fas fa-download"></i></a>
+            <a href="social.html" title=" Kebutuhan Sosial Media"><i class="fas fa-users"></i></a>
+            <a href="apkpremium.html" title="Premium"><i class="fas fa-crown"></i></a>
+            <a href="nokos.html" title="NoKos "><i class="fas fa-sd-card"></i></a>
+            <a href="testimoni.html" title="Testimoni"><i class="fas fa-comment-dots"></i></a>
+        </nav>
+    </div>
+    <script>
+        // Daftar link MediaFire untuk tampilan
+        const mediafireLinks = [
+            "https://www.mediafire.com/file/pb321lhdjs1sdpy/Temp_Mail_Premium-.apk/file",
+            "https://www.mediafire.com/file/669920atdl5bpkl/OrderKuota%2528SFILE.MOBI%2529-.apk/file",
+            "https://www.mediafire.com/file/xgqnit32ysvkmp2/Pixellab_Logo-.apk/file",
+            "https://www.mediafire.com/file/ke7ous4w9y6qtnj/KENON_WA_by_Raaan_Script-.apk/file",
+            "https://www.mediafire.com/file/b9ov3a4ljtas3qp/JPM-.apk/file",
+            "https://www.mediafire.com/file/i0eha6dgl073ln9/FAKE_DANA_NOTIFIKASI-.apk/file",
+            "https://www.mediafire.com/file/5tf8jbbb5iep44c/E-KTP_Simulasi-.apk/file",
+            "https://www.mediafire.com/file/tm7bdnkw5dveuty/BANNED_PRIVATE_2.23.1.11_r_sign-.apk/file",
+            "https://www.mediafire.com/file/9vn2g6pmsn3eef0/BANNED_GMAIL-.apk/file",
+            "https://www.mediafire.com/file/un8pblotchlveth/BANNED_UNBANNED_NUMBER-.apk/file",
+            "https://www.mediafire.com/file/iuvkimwm53z7bgo/BANIDO_ELIT-.apk/file",
+            "https://www.mediafire.com/file/5qvmthqm7pztht9/AutoSave_Contact-.apk/file",
+            "https://www.mediafire.com/file/hw3zuno6czy7faj/APK_KENON-.apk/file",
+            "https://www.mediafire.com/file/e3r0z0autawmpqv/Apk%E2%80%A2Push%E2%80%A2Kontak-.apk/file",
+            "https://www.mediafire.com/file/0fk2mcmxr08atv1/APK_BEKU_PAYMENT-.apk/file"
+        ];
+        // Shortlink tunggal (hanya satu step)
+        const shortLinks = [
+            "https://sfl.gl/xTJu",
+            "https://sfl.gl/8qSS4qNT",
+            "https://sfl.gl/pcLWy",
+            "https://sfl.gl/Oq3uBTbW",
+            "https://sfl.gl/meN1",
+            "https://sfl.gl/vGG8i",
+            "https://sfl.gl/wYmSF",
+            "https://sfl.gl/Sj3Ps6",
+            "https://sfl.gl/Y79jQzg",
+            "https://sfl.gl/rQ6g",
+            "https://sfl.gl/f3fVSjT",
+            "https://sfl.gl/sNHHuE5n",
+            "https://sfl.gl/hzMHqm",
+            "https://sfl.gl/nDco9p",
+            "https://sfl.gl/qSQzC"
+        ];
+
+        const listEl = document.getElementById('file-list');
+
+        function getName(url) {
+            const m = url.match(/\/([^\/]+\-.apk)/i);
+            return m ? m[1] : url;
+        }
+
+        function populate() {
+            mediafireLinks.forEach((url, i) => {
+                const box = document.createElement('div');
+                box.className = 'file-box';
+                box.innerHTML = `
+          <div class="file-name">${getName(url)}</div>
+          <div class="file-url">${url}</div>
+        `;
+                box.onclick = () => {
+                    // langsung ke shortlink tunggal
+                    window.location.href = shortLinks[i];
+                };
+                listEl.appendChild(box);
+            });
+        }
+
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'flex';
+                populate();
+            }, 800);
+        });
+    </script>
+</body>
+
+</html>
